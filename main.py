@@ -1,5 +1,5 @@
 from direct.showbase.ShowBase import ShowBase
-from mouseset import mouse
+from mouseset import Mouse
 from player import Player
 from map import Map
 from pausemenu import Menu, Pause
@@ -8,6 +8,8 @@ class Game(ShowBase):
         super().__init__()
         self.menu = Menu()
         self.pause = Pause()
+        self.mouse = Mouse()
+
     def startGame(self):
         # self.mouse = mouse
         self.menu.panel.hide()

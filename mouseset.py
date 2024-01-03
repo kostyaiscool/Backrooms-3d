@@ -1,6 +1,8 @@
 from direct.task.Task import Task
 from direct.task.TaskManagerGlobal import taskMgr
 
+from panda3d.core import WindowProperties
+
 
 class Mouse:
     def __init__(self):
@@ -62,4 +64,11 @@ class Mouse:
         base.win.movePointer(0,
               int(base.win.getProperties().getXSize() / 2),
               int(base.win.getProperties().getYSize() / 2))
-mouse = Mouse()
+        
+    def hideCursor(self, mouseFlag):
+        """Hide the mouse"""
+        wp = WindowProperties()
+        wp.setCursorHidden(mouseFlag)
+        base.win.requestProperties(wp)
+
+

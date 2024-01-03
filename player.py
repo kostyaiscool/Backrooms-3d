@@ -1,6 +1,6 @@
-from panda3d.core import Vec3, WindowProperties
+from panda3d.core import Vec3
 from direct.showbase.ShowBaseGlobal import globalClock
-from pausemenu import Pause
+# from pausemenu import Pause
 class Player:
     keyMap = {
         "forward": False,
@@ -19,7 +19,9 @@ class Player:
         self.player.setTexture(loader.loadTexture(self.texture))
         self.player.reparentTo(render)
         self.player.setPos(pos)
-        self.pause = Pause()
+
+        base.mouse.hideCursor(True)
+        # self.pause = Pause()8
 
         self.position = Vec3(pos)
         self.acceleration = Vec3(0.0, 0.0, 0.0)
@@ -35,7 +37,8 @@ class Player:
         self.firstFace()
         # self.collisionsCreate()
         self.events()
-        self.hideCursor(True)
+
+        # self.hideCursor(True)
 
         taskMgr.add(self.move, "move")
         taskMgr.add(self.mouseTask, "mouseTask")
@@ -57,11 +60,12 @@ class Player:
 
     def superPause(self):
         if self.paused == False:
-            paused = True
-            self.pause.pause()
+            self.paused = True
+            base.pause.pause()
         else:
-            paused = False
-            self.pause.unpause()
+            self.paused = False
+            base.pause.unpause()
+
 
     def jump(self):
         self.is_jumping = True
@@ -163,12 +167,6 @@ class Player:
         self.player.setP(-self.rotateY)
 
         return task.cont
-
-    def hideCursor(self, mouseFlag):
-        """Hide the mouse"""
-        wp = WindowProperties()
-        wp.setCursorHidden(mouseFlag)
-        base.win.requestProperties(wp)
 
     def recenterMouse(self):
         base.win.movePointer(

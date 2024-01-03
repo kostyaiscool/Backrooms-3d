@@ -24,3 +24,4 @@ class Pause:
         self.panel.show()
         taskMgr.remove("move")
         taskMgr.remove("mouseTask")
+        base.mouse.hideCursor(False)
