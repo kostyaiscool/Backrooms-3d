@@ -19,8 +19,9 @@ class Player:
         self.player.setTexture(loader.loadTexture(self.texture))
         self.player.reparentTo(render)
         self.player.setPos(pos)
+
         base.mouse.hideCursor(True)
-        # self.pause = Pause()
+        # self.pause = Pause()8
 
         self.position = Vec3(pos)
         self.acceleration = Vec3(0.0, 0.0, 0.0)
@@ -36,6 +37,7 @@ class Player:
         self.firstFace()
         # self.collisionsCreate()
         self.events()
+
         # self.hideCursor(True)
 
         taskMgr.add(self.move, "move")
@@ -63,6 +65,7 @@ class Player:
         else:
             self.paused = False
             base.pause.unpause()
+
 
     def jump(self):
         self.is_jumping = True
@@ -164,12 +167,6 @@ class Player:
         self.player.setP(-self.rotateY)
 
         return task.cont
-
-    # def hideCursor(self, mouseFlag):
-    #     """Hide the mouse"""
-    #     wp = WindowProperties()
-    #     wp.setCursorHidden(mouseFlag)
-    #     base.win.requestProperties(wp)
 
     def recenterMouse(self):
         base.win.movePointer(

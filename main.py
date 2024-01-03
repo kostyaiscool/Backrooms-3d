@@ -9,6 +9,7 @@ class Game(ShowBase):
         self.menu = Menu()
         self.pause = Pause()
         self.mouse = Mouse()
+
     def startGame(self):
         # self.mouse = mouse
         self.menu.panel.hide()
@@ -16,7 +17,6 @@ class Game(ShowBase):
         self.map = Map((0, 0, 0))
     def stopGame(self):
         # self.mouse = mouse
-        print(self.pause)
         self.pause.panel.hide()
         self.menu.panel.show()
 

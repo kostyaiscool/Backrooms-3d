@@ -1,5 +1,6 @@
 from direct.task.Task import Task
 from direct.task.TaskManagerGlobal import taskMgr
+
 from panda3d.core import WindowProperties
 
 
@@ -69,4 +70,5 @@ class Mouse:
         wp = WindowProperties()
         wp.setCursorHidden(mouseFlag)
         base.win.requestProperties(wp)
+
 
