@@ -1,4 +1,4 @@
-from panda3d.core import Vec3
+from panda3d.core import Vec3, CollisionNode, CollisionBox, BitMask32
 from direct.showbase.ShowBaseGlobal import globalClock
 # from pausemenu import Pause
 class Player:
@@ -15,9 +15,10 @@ class Player:
     def __init__(self, pos):
         self.model = 'sources/testmodel.obj'
         self.texture = 'sources/Image20231124120354.png'
+        self.playerRoot = render.attachNewNode("playerRoot")
         self.player = loader.loadModel(self.model)
         self.player.setTexture(loader.loadTexture(self.texture))
-        self.player.reparentTo(render)
+        self.player.reparentTo(self.playerRoot)
         self.player.setPos(pos)
 
         base.mouse.hideCursor(True)
@@ -35,7 +36,7 @@ class Player:
         self.paused = False
 
         self.firstFace()
-        # self.collisionsCreate()
+        self.collisionsCreate()
         self.events()
 
         # self.hideCursor(True)
@@ -127,7 +128,14 @@ class Player:
         #             self.position.z = inp.z
         #         else:
         #             self.is_jumping = False
-        self.player.setPos(self.position)
+        # self.player.setPos(self.position)
+        for i in range(base.cHandler.getNumEntries()):
+            entry = base.cHandler.getEntry(i)
+            name = entry.getIntoNode().getName()
+            if name == "wall_collide":
+                self.wallCollideHandler(entry)
+            elif name == "ground_collide":
+                self.groundCollideHandler(entry)
 
         return task.cont
 
@@ -181,3 +189,33 @@ class Player:
         base.camera.reparentTo(self.player)
         base.camera.setH(180)
         base.camera.setPos(0, 0, 3.5)
+
+    def collisionsCreate(self):
+        self.playerSphere = self.player.find("**/player")
+        self.playerSphere.node().setFromCollideMask(BitMask32.bit(0))
+        self.playerSphere.node().setIntoCollideMask(BitMask32.allOff())
+        # self.player_col = self.player.attachNewNode(CollisionNode("player_col"))
+        # self.player_col.node().addSolid(CollisionBox((-1, -1, 0.4), (1, 1, 5.5)))
+        # self.player_col.setCollideMask(BitMask32.bit(0))
+        # self.player_col.setTag("type", "player")
+        # # self.player_col.show()
+
+        base.cTrav.addCollider(self.playerSphere, base.cHandler)
+    def groundCollideHandler(self, colEntry):
+        # Set the ball to the appropriate Z value for it to be exactly on the
+        # ground
+        newZ = colEntry.getSurfacePoint(render).getZ()
+        self.playerRoot.setZ(newZ + .4)
+
+        # # Find the acceleration direction. First the surface normal is crossed with
+        # # the up vector to get a vector perpendicular to the slope
+        # norm = colEntry.getSurfaceNormal(render)
+        # accelSide = norm.cross(LVector3.up())
+        # # Then that vector is crossed with the surface normal to get a vector that
+        # # points down the slope. By getting the acceleration in 3D like this rather
+        # # than in 2D, we reduce the amount of error per-frame, reducing jitter
+        # self.accelV = norm.cross(accelSide)
+
+    # This function handles the collision between the ball and a wall
+    def wallCollideHandler(self, colEntry):
+        pass

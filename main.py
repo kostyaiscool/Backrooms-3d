@@ -1,4 +1,6 @@
 from direct.showbase.ShowBase import ShowBase
+from panda3d.core import CollisionTraverser, CollisionHandlerQueue
+
 from mouseset import Mouse
 from player import Player
 from map import Map
@@ -6,6 +8,8 @@ from pausemenu import Menu, Pause
 class Game(ShowBase):
     def __init__(self):
         super().__init__()
+        self.cTrav = CollisionTraverser()
+        self.cHandler = CollisionHandlerQueue()
         self.menu = Menu()
         self.pause = Pause()
         self.mouse = Mouse()
